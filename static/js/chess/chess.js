@@ -161,6 +161,7 @@ var SquareChessGame = {
 		game.startMove = function() {
 			if(now_player_cnt < 0) return;
 			if (game.checkMove(game.step, players[now_player_cnt].player_id) == true) {
+                console.log(now_player_cnt);
 				game.moveOnce(game.step);
 			} else {
 				alert("error move: " + game.step);

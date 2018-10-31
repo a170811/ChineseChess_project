@@ -186,42 +186,43 @@ var AI = {
 
 		ai.findBestNextStep = function (initStr, player_id, game, call_back){
 
-				ai.toString  = function(){
-					var s = "";
-					for(var r = 0; r<10; r++){
-						for(var c = 0; c<9; c++){
-							s = s + "" +  game.getChessLetter(ai.board[r][c]);
-						}
-					}
-					return s;
-				}
+            ai.toString  = function(){
+                var s = "";
+                for(var r = 0; r<10; r++){
+                    for(var c = 0; c<9; c++){
+                        s = s + "" +  game.getChessLetter(ai.board[r][c]);
+                    }
+                }
+                return s;
+            }
 
-				ai.set = {};
-				setTimeout(function(){
-					//console.log(initStr);		
-					ai.myplayer_id = player_id;
-					ai.strToBoard(initStr,game);
-					/***********************************\
-					* 极大极小搜索入口
-					\***********************************/
-					ai.deep = 4;	
-					ai.eatStack = [];
-					result = ai.Search(ai.board, player_id, ai.deep, MAX_SCORE+1);
-					step = result.step;
-					if(step){	
-						//
-						console.log(result.score + " from: " + step.from.r + " " + step.from.c +
-							" to: " + step.to.r + " " + step.to.c);
-						game.step.from = {};
-						game.step.to = {};
-						game.step.from.r  = step.from.r;
-						game.step.from.c  = step.from.c;
-						game.step.to.r  = step.to.r;
-						game.step.to.c  = step.to.c;
-	
-						call_back();
-					}
-				}, 10);
+            ai.set = {};
+            setTimeout(function(){
+                //console.log(initStr);		
+                ai.myplayer_id = player_id;
+                ai.strToBoard(initStr,game);
+                /***********************************\
+                * 极大极小搜索入口
+                \***********************************/
+                ai.deep = 4;	
+                ai.eatStack = [];
+                result = ai.Search(ai.board, player_id, ai.deep, MAX_SCORE+1);
+                step = result.step;
+                console.log(result);
+                if(step){	
+                    //
+                    console.log(result.score + " from: " + step.from.r + " " + step.from.c +
+                        " to: " + step.to.r + " " + step.to.c);
+                    game.step.from = {};
+                    game.step.to = {};
+                    game.step.from.r  = step.from.r;
+                    game.step.from.c  = step.from.c;
+                    game.step.to.r  = step.to.r;
+                    game.step.to.c  = step.to.c;
+
+                    call_back();
+                }
+            }, 10);
 
 		}
 
@@ -249,7 +250,24 @@ var AI = {
 
 		ai.eatStack = [];
 
-		ai.Search = function(board, player_id, deep, now_best){
+        ai.Search_r = function(){
+            var result
+        }
+        
+        ai.Search = function(board, player_id, deep, now_best){
+			var flag = (player_id != ai.myplayer_id?true:false);
+
+			var steps = getAllPossibleStep(board, player_id);
+            var rand = Math.floor(Math.random()*steps.length);
+            var result = {
+                score:66666, 
+                step:steps[rand], 
+            };
+            return result;
+
+        }
+
+		ai.Search_ = function(board, player_id, deep, now_best){
 			//var b_str = ai.toString();
 			//result = ai.set[b_str]
 			//if(result) return result; 
